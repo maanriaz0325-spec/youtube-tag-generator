@@ -1,0 +1,6 @@
+{
+  "name": "YouTube Tag Generator",
+  "description": "Optimize your YouTube video SEO with tag generation, competition analysis, misspelling capture, and total metadata auditing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
