@@ -90,7 +90,12 @@ app.post('/api/fetch-youtube', async (req, res) => {
 });
 
 // REST API endpoint: YouTube Tag Generator & SEO Analysis Suite
-app.post('/api/generate-tags', async (req, res) => {
+app.get('/api/debug', (req, res) => {
+  res.json({
+    geminiKey: process.env.GEMINI_API_KEY ? "SET" : "NOT SET",
+    keyLength: process.env.GEMINI_API_KEY?.length || 0
+  });
+});app.post('/api/generate-tags', async (req, res) => {
   const { title, description, mode, contentType, channelSize, language } = req.body;
 
   if (!title) {
