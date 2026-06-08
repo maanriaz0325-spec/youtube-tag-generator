@@ -153,8 +153,8 @@ model: 'gemini-2.0-flash',
         aiKeywords = parsed.map(k => String(k).toLowerCase().trim());
         geminiActive = true;
       }
-    } catch (err) {
-      console.error("Gemini API call experienced exception. Routing through programmatic fallback math engine.", err);
+    } catch (err: any) {
+      console.error("GEMINI_ERROR:", err?.message || err?.status || JSON.stringify(err));
     }
   }
 
