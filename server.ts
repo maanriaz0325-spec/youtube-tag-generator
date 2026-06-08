@@ -7,8 +7,7 @@ import express from 'express';
 import { GoogleGenAI, Type } from '@google/genai';
 import path from 'path';
 import dotenv from 'dotenv';
-import { assembleProcessedResults } from './src/engine';
-
+import { assembleProcessedResults } from './src/engine.js';
 // Load env variables
 dotenv.config();
 
