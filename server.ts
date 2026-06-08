@@ -22,13 +22,8 @@ let ai: GoogleGenAI | null = null;
 if (apiKey) {
   try {
     ai = new GoogleGenAI({
-      apiKey,
-      httpOptions: {
-        headers: {
-          'User-Agent': 'aistudio-build',
-        }
-      }
-    });
+  apiKey,
+});
     console.log("Gemini API Client successfully initialized on backend server.");
   } catch (err) {
     console.error("Failed to initialize Gemini Client with provided key:", err);
@@ -133,6 +128,7 @@ Task:
 Format requirements:
 Response MUST be an extremely clean JSON array of strings ONLY. No markdown wrappers (except the JSON format itself), no explanation, and no comments.
 Example format:
+
 ["niche specific tag", "long tail intent keyphrase", "exact sequence variation"]`;
 
       const response = await ai.models.generateContent({
