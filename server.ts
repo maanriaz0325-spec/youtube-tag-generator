@@ -132,7 +132,7 @@ Example format:
 ["niche specific tag", "long tail intent keyphrase", "exact sequence variation"]`;
 
       const response = await ai.models.generateContent({
-model: 'gemini-1.5-flash',
+model: 'gemini-2.0-flash-lite',
         contents: prompt,
         config: {
           systemInstruction: "You are a world-class YouTube SEO strategist, algorithm engineer, and audience intent cataloger. Your absolute priority is to deeply analyze the user's specific niche, topic, and viewer search intent/motivation. Generate tags that are highly relevant, extremely targeted, and completely covered by the video's core content. Do NOT include generic, broad, or off-topic queries. All output must be formatted as a pure JSON array of strings.",

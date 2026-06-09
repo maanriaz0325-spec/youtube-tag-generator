@@ -210,7 +210,7 @@ export default function App() {
       }
     } catch (err: any) {
   console.error(err);
-  setErrorText(err.message || " Handshake error initializing AI models. Running programmatic falling algorithms.");
+  setErrorText(err.message || "Failed to generate tags. Please try again.");
   
 } finally {
       setLoading(false);
