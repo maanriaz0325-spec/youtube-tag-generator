@@ -4,8 +4,8 @@
  */
 
 import express from 'express';
-import { GoogleGenAI, Type } from '@google/genai';
-import path from 'path';
+// Gemini API direct fetch - no SDK needed
+// import path from 'path';
 import dotenv from 'dotenv';
 import { assembleProcessedResults } from './src/engine.js';
 // Load env variables
@@ -16,20 +16,22 @@ const app = express();
 app.use(express.json());
 
 // Initialize Gemini Client safely
-const apiKey = process.env.GEMINI_API_KEY;
-let ai: GoogleGenAI | null = null;
+const geminiApiKey = process.env.GEMINI_API_KEY || "";
 
-if (apiKey) {
-  try {
-    ai = new GoogleGenAI({
-  apiKey,
-});
-    console.log("Gemini API Client successfully initialized on backend server.");
-  } catch (err) {
-    console.error("Failed to initialize Gemini Client with provided key:", err);
-  }
-} else {
-  console.log("No GEMINI_API_KEY environment variable found. Server will run in high-quality programmatic fallback mode.");
+async function callGemini(prompt: string): Promise<string> {
+  const response = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }]
+      })
+    }
+  );
+  const data = await response.json();
+  if (!response.ok) throw new Error(JSON.stringify(data.error));
+  return data.candidates?.[0]?.content?.parts?.[0]?.text || "";
 }
 
 // REST API endpoint: YouTube video metadata fetch (public oEmbed fallback)
