@@ -50,7 +50,7 @@ RULES:
         "HTTP-Referer": "https://youtube-tag-generator-swart.vercel.app",
       },
       body: JSON.stringify({
-model: "google/gemini-flash-1.5-8b",
+model: "meta-llama/llama-3.3-70b-instruct:free",
         messages: [{ role: "user", content: prompt }]
       })
     });
