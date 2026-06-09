@@ -6,18 +6,11 @@ module.exports = async function handler(req, res) {
   try {
     const { title, description, mode, contentType, channelSize, language } = req.body;
 
-    if (!process.env.GEMINI_API_KEY) {
+    if (!process.env.OPENROUTER_API_KEY) {
       return res.status(500).json({ error: "No API key configured" });
     }
 
-    const response = await fetch(
-`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${process.env.GEMINI_API_KEY}`,      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{
-            parts: [{
-              text: `You are a YouTube SEO expert. Generate tags for: "${title}"
+    const prompt = `You are a YouTube SEO expert. Generate tags for: "${title}"
               
 Return ONLY valid JSON like this:
 {
@@ -43,29 +36,36 @@ Return ONLY valid JSON like this:
 RULES:
 - Replace ALL placeholder text with REAL tags for: "${title}"
 - broadTags: 3-4 single word tags
-- mediumTags: 4-5 two word tags  
+- mediumTags: 4-5 two word tags
 - targetedTags: 4-5 three word tags
 - longTailTags: 4-5 four+ word tags
-- recommendedSet.tags: best 12 tags from all categories combined
-- Return ONLY JSON, no markdown, no explanation`
-            }]
-          }]
-        })
-      }
-    );
+- recommendedSet.tags: best 12 tags from all categories as full tag objects
+- Return ONLY JSON, no markdown, no explanation`;
+
+    const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${process.env.OPENROUTER_API_KEY}`,
+        "HTTP-Referer": "https://youtube-tag-generator-swart.vercel.app",
+      },
+      body: JSON.stringify({
+        model: "google/gemini-2.0-flash-exp:free",
+        messages: [{ role: "user", content: prompt }]
+      })
+    });
 
     const data = await response.json();
-    
-    if (!data.candidates || !data.candidates[0]) {
-      return res.status(500).json({ error: "No response from Gemini" });
+
+    if (!data.choices || !data.choices[0]) {
+      return res.status(500).json({ error: "No response from AI: " + JSON.stringify(data) });
     }
 
-    const text = data.candidates[0].content.parts[0].text || "{}";
-    
+    const text = data.choices[0].message.content || "{}";
     const jsonStart = text.indexOf("{");
     const jsonEnd = text.lastIndexOf("}");
     const cleanJson = text.substring(jsonStart, jsonEnd + 1);
-    
+
     const parsed = JSON.parse(cleanJson);
     res.json(parsed);
 
