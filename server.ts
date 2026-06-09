@@ -84,12 +84,17 @@ app.post('/api/fetch-youtube', async (req, res) => {
   }
 });
 
-// REST API endpoint: YouTube Tag Generator & SEO Analysis Suite
-app.get('/api/debug', (req, res) => {
-  res.json({
-    geminiKey: process.env.GEMINI_API_KEY ? "SET" : "NOT SET",
-    keyLength: process.env.GEMINI_API_KEY?.length || 0
-  });
+app.get('/api/debug', async (req, res) => {
+  try {
+    if (!ai) return res.json({ error: "AI not initialized" });
+    const response = await ai.models.generateContent({
+      model: 'gemini-2.0-flash-lite',
+      contents: 'Say hello'
+    });
+    res.json({ success: true, text: response.text });
+  } catch (err: any) {
+    res.json({ error: err.message, code: err.status });
+  }
 });app.post('/api/generate-tags', async (req, res) => {
   const { title, description, mode, contentType, channelSize, language } = req.body;
 
