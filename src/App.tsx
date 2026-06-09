@@ -212,10 +212,6 @@ export default function App() {
   console.error(err);
   setErrorText(err.message || " Handshake error initializing AI models. Running programmatic falling algorithms.");
   
-  // Standalone fully client-fallback in case Express network is configuring
-  const fallback = initialPlaceholderResults;
-  setResults(fallback);
-  setActiveSelectedTags(fallback.tagSets.recommendedSet.tags);
 } finally {
       setLoading(false);
     }
