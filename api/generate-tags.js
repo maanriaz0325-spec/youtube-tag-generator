@@ -50,7 +50,7 @@ RULES:
         "HTTP-Referer": "https://youtube-tag-generator-swart.vercel.app",
       },
       body: JSON.stringify({
-model: "mistralai/mistral-7b-instruct:free",
+model: "openrouter/auto",
         messages: [{ role: "user", content: prompt }]
       })
     });
