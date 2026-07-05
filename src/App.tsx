@@ -107,6 +107,16 @@ const initialPlaceholderResults: TagGeneratorResponse = {
 };
 
 export default function App() {
+  useEffect(() => {
+  const sendHeight = () => {
+    const height = document.body.scrollHeight;
+    window.parent.postMessage({ type: 'resize-iframe', height }, '*');
+  };
+  sendHeight();
+  const observer = new ResizeObserver(sendHeight);
+  observer.observe(document.body);
+  return () => observer.disconnect();
+}, []);
   // Input fields
   const [activeTab, setActiveTab ] = useState<'fresh' | 'improve'>('fresh');
   const [titleInput, setTitleInput] = useState('How to invest in stocks for beginners 2026');
