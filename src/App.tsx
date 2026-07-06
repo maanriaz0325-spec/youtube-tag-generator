@@ -946,7 +946,9 @@ export default function App() {
       </main>
 
       <footer className="bg-white border-t border-slate-200 mt-20 py-8 text-center text-xs text-slate-400 font-roboto font-semibold space-y-2">
-        
+        <div>YouTube Tag Generator Tool for SEO Optimizations. All algorithms configured strictly.</div>
+        <div className="text-[10px] text-slate-400 text-center font-roboto">
+          &copy; 2026 Developer SEO Tools suite. All rights indexable.
         </div>
       </footer>
 
